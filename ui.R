@@ -18,7 +18,8 @@ mue_ui <- fluidPage(
     placeholder = "No file selected"),
     # Display the data input as a table
     mainPanel(
-        tableOutput("contents")
+        tableOutput("rawData"),
+        plotOutput("Oplot")
     )
 )
 shinyUI(mue_ui)
