@@ -1,5 +1,5 @@
 #Put both the source code and 
-Dir<-"C:/path/" #Change this to match the path for the folder you put the
+Dir<-"/Users/kaiser/Desktop/internProj1/MUE/" #Change this to match the path for the folder you put the
 source(paste0(Dir,'MUE_code.r'), echo=TRUE)
 dat.in<-read.csv(paste0(Dir,"example_B_CVs.csv"),header=T)
 #Split biomass from coefficient of variations (CVs)
