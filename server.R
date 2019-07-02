@@ -20,13 +20,15 @@ mue_server <- function (input, output) {
         index<-M_vals_all[,2:(((ncol(M_vals_all)-1)/2)+1)]
         CVs<-M_vals_all[,(((ncol(M_vals_all)-1)/2)+2):ncol(M_vals_all)]
         years<-M_vals_all[,1]
-        #RUN clusters
-        #Hubert's gamma for the assignment clusters
-        spp.Hg<-CPUE.sims.SPP(index,1000,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
-        #Make silhouette plot
-        print(plot(pam(spp.Hg$D.matrix,2,diss=TRUE), main="HUBERT's GAMMA used for cluster assignment"))
-        abline(v=c(0.25,0.5,0.75),col="red",lwd=c(1,2,3))
-        print("Plot method completed")
+        # TODO: Add plot
+
+        # #RUN clusters
+        # #Hubert's gamma for the assignment clusters
+        # spp.Hg<-CPUE.sims.SPP(index,1000,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
+        # #Make silhouette plot
+        # plot(pam(spp.Hg$D.matrix,2,diss=TRUE), main="HUBERT's GAMMA used for cluster assignment")
+        # abline(v=c(0.25,0.5,0.75),col="red",lwd=c(1,2,3))
+        # print("Plot method completed")
     })
 
 shinyServer(mue_server)
