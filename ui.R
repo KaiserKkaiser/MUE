@@ -17,11 +17,15 @@ mue_ui <- fluidPage(
     ),
     buttonLabel = "Browse...",
     placeholder = "No file selected"),
-    # Display the data input as a table
+   
+
+
+    # Display the results
     mainPanel(
         tableOutput("rawData"),
         # plotOutput("Oplot")
-        uiOutput("huresult")
+        uiOutput("huresult"),
+        uiOutput("silhresult")
     )
 )
 shinyUI(mue_ui)
