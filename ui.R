@@ -1,5 +1,6 @@
 require(shiny)
 require(shinyFiles)
+
 if(interactive()) {
 mue_ui <- fluidPage(
     titlePanel("MUE GUI"),
@@ -19,7 +20,8 @@ mue_ui <- fluidPage(
     # Display the data input as a table
     mainPanel(
         tableOutput("rawData"),
-        plotOutput("Oplot")
+        # plotOutput("Oplot")
+        uiOutput("huresult")
     )
 )
 shinyUI(mue_ui)
