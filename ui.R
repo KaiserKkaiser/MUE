@@ -17,7 +17,16 @@ mue_ui <- fluidPage(
     ),
     buttonLabel = "Browse...",
     placeholder = "No file selected"),
-   
+
+    radioButtons("button", "Choose a cluster", 
+                choiceNames = list(
+                    "Hubert's Gamma",
+                    "Silhouette"
+                ),
+                choiceValues = list(
+                    # 1 for Hubert's Gamma; 0 for Silhouette
+                    1, 0
+                )),
 
 
     # Display the results
