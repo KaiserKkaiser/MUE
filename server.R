@@ -46,26 +46,21 @@ mue_server <- function (input, output) {
 
  ### Plot the input values when people upload a file
     output$inputData1 <- renderPlot({
-        # Normal plot solution
-        # xlim <- range(min(years), max(years))
-        # ylim <- range(min(CVs), max(CVs))
-        # plot(years, CVs[, 1],
-        # main="Years and CVs",
-        # ylab="CVs",
-        # type="l",
-        # col="blue", xlim = xlim, ylim = ylim)
-        # for(i in range(1, 5)) {
-        #     lines(years, CVs[ , i])
-        # }
-        # newY <- years
-        # newA <- index[, 1]
-        # color <- rep(year, times=length(index))
-        # for(i in range(2, length(index))) {
-        #     newY <- newY.cbind(years)
-        #     newA <- newA[, i]
-        # }
-        data <- data.frame(years, CVs[,1])
-        ggplot(data, aes(x=years, y=CVs[,1]))+ geom_line(aes(colour=1))
+        newY <- years
+        newA <- index[, 1]
+        # newC is potentially the span
+        newC <- CVs[, 1]
+        color <- rep("Area1", times=length(years))
+        for(i in 2:length(index)) {
+            # newY <- newY.cbind(years)
+            # newA <- newA.cbine(index[, i])
+            newY <- c(newY, years)
+            newA <- c(newA, index[, i])
+            newC <- c(newC, CVs[, i])
+            color <- c(color, rep(paste0("Area", i), times=length(years)))
+        }
+        data <- data.frame(newY, newA, color)
+        ggplot(data, aes(x=newY, y=newA)) + geom_line(aes(colour=color))
     })
 
  ### Let the user to choose either of the methods
