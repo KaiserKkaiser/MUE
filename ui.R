@@ -1,5 +1,6 @@
 require(shiny)
 require(shinyFiles)
+require(ggplot2)
 
 if(interactive()) {
 mue_ui <- fluidPage(
@@ -18,7 +19,7 @@ mue_ui <- fluidPage(
     buttonLabel = "Browse...",
     placeholder = "No file selected"),
 
-    radioButtons("button", "Choose a cluster", 
+    radioButtons("button", "Choose cluster diagonistic", 
                 choiceNames = list(
                     "Hubert's Gamma",
                     "Silhouette"
@@ -32,7 +33,9 @@ mue_ui <- fluidPage(
     # Display the results
     mainPanel(
         tableOutput("rawData"),
-        # plotOutput("Oplot")
+        plotOutput("inputData1"),
+        plotOutput("huplot"),
+        plotOutput("silplot"),
         uiOutput("huresult"),
         uiOutput("silhresult")
     )
