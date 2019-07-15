@@ -6,7 +6,7 @@ if(interactive()) {
 mue_ui <- fluidPage(
     titlePanel("MUE GUI"),
     # Browse files
-    downloadLink("sample", "Sample Data Download"),
+    downloadButton("sample", "Sample Data Download"),
     fileInput("file1", "Choose MUE input file", 
     multiple = FALSE, 
     accept = c(

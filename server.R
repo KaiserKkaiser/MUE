@@ -4,6 +4,7 @@ if(!require(ggplot2))(install.packages("ggplot2"))
 library(ggplot2)
 source("MUE_code.r")
 mue_server <- function (input, output) {
+    ### Process Sample Data ###
     dat.in<-read.csv(paste0("example_B_CVs.csv"),header=T)
     output$sample <- downloadHandler(
         filename = "sampleData.csv",
