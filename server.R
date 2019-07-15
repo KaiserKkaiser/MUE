@@ -101,7 +101,7 @@ mue_server <- function (input, output) {
     output$silhresult <- renderUI({
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
         numberOfCluster <- as.numeric(input$noC)
-        spp.Sil<<-CPUE.sims.SPP(index,numberOfCluster,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T) 
+        spp.Sil<<- CPUE.sims.SPP(index,numberOfCluster,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T)
         spp.Sil
         }
     })
@@ -120,9 +120,8 @@ mue_server <- function (input, output) {
         content = function(file) {
             png(file)
             print(huPlot)
-            dev.off},
-        contentType = "image/png"
-    )
+            dev.off()
+            })
 
 #### Plot: 
     # Avg.Sil
