@@ -79,11 +79,11 @@ mue_server <- function (input, output) {
 
     ### Download Raw Data ###
     output$rawDataDownload <- downloadHandler(
-        filename = "rawData.pdf",
+        filename = "rawData.png",
         content = function(file) {
-            pdf(file)
+            png(file)
             print(rdp())
-            dev.off
+            dev.off()
         })
 
  ### Let the user to choose either of the methods
@@ -120,8 +120,8 @@ mue_server <- function (input, output) {
         content = function(file) {
             png(file)
             print(huPlot)
-            dev.off
-        }
+            dev.off},
+        contentType = "image/png"
     )
 
 #### Plot: 
