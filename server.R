@@ -1,7 +1,6 @@
 if(!require(shiny)){install.packages("shiny")}
 library(shiny)
 if(!require(ggplot2)){install.packages("ggplot2")}
-
 if(!require(cluster)){install.packages("cluster")}
 if(!require(factoextra)) {install.packages("factoextra")}
 if(!require(reshape2)) {intall.packages("reshape2")}
@@ -157,20 +156,7 @@ mue_server <- function (input, output) {
         print(cpSil)
     })
 
-
-### archived code of plot ### 
-    # hp <- reactive({
-    #     if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-    #     # spp.Hg<<-CPUE.sims.SPP(index,1000,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
-    #     ## Number if clusters: 2
-    #     huPlot<<-plot(pam(spp.Hg$D.matrix,2,diss=TRUE), main="HUBERT's GAMMA used for cluster assignment")
-    #     abline(v=c(0.25,0.5,0.75),col="red",lwd=c(1,2,3))
-    #     }})
-
-    # output$huplot <- renderPlot({
-    #     print(hp())
-    # })
-### archived code of plot ###
+####################### Let the User Run with Their Number of Clusters #########################
 
 #Question TODO: For Avg, there's already avg line on it, what should we draw?
     output$huplot <- renderPlot({
@@ -209,8 +195,6 @@ mue_server <- function (input, output) {
             print(sp())
             dev.off()
         })
-
-
 
 shinyServer(mue_server)
 }
