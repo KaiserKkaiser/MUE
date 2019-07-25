@@ -1,6 +1,10 @@
 if(!require(shiny)){install.packages("shiny")}
 library(shiny)
-if(!require(ggplot2))(install.packages("ggplot2"))
+if(!require(ggplot2)){install.packages("ggplot2")}
+
+if(!require(cluster)){install.packages("cluster")}
+if(!require(factoextra)) {install.packages("factoextra")}
+if(!require(reshape2)) {intall.packages("reshape2")}
 library(ggplot2)
 source("MUE_code.r")
 mue_server <- function (input, output) {
@@ -77,12 +81,42 @@ mue_server <- function (input, output) {
         }
     })
 
+    output$inputData2 <- renderPlot({
+        inFile <- input$file1
+        if(!is.null(input$file1)) {
+        newY <- years
+        newA <- index[, 1]
+        # newC is potentially the span
+        newC <- CVs[, 1]
+        color <- rep("Area1", times=length(years))
+        for(i in 2:length(index)) {
+            # newY <- newY.cbind(years)
+            # newA <- newA.cbine(index[, i])
+            newY <- c(newY, years)
+            newA <- c(newA, index[, i])
+            newC <- c(newC, CVs[, i])
+            color <- c(color, rep(paste0("Area", i), times=length(years)))
+        }
+        data2 <- data.frame(newY, newC, color)
+        rdp2 <<- reactive(ggplot(data2, aes(x=newY, y=newC)) + geom_line(aes(colour=color)) + ggtitle("CV each Area with respect of time(year)"))
+        print(rdp2())
+        }
+    })
+
     ### Download Raw Data ###
     output$rawDataDownload <- downloadHandler(
         filename = "rawData.png",
         content = function(file) {
             png(file)
             print(rdp())
+            dev.off()
+        })
+
+    output$rawDataDownloadCV <- downloadHandler(
+        filename = "rawDataCV.png",
+        content = function(file) {
+            png(file)
+            print(rdp2())
             dev.off()
         })
 
@@ -100,28 +134,40 @@ mue_server <- function (input, output) {
 
     output$silhresult <- renderUI({
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-        numberOfCluster <- as.numeric(input$noC)
-        spp.Sil<<- CPUE.sims.SPP(index,numberOfCluster,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T)
+        numberOfSimul <- as.numeric(input$noS)
+        spp.Sil<<- CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T)
         spp.Sil
         }
     })
+### archived code of plot ### 
+    # hp <- reactive({
+    #     if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+    #     # spp.Hg<<-CPUE.sims.SPP(index,1000,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
+    #     ## Number if clusters: 2
+    #     huPlot<<-plot(pam(spp.Hg$D.matrix,2,diss=TRUE), main="HUBERT's GAMMA used for cluster assignment")
+    #     abline(v=c(0.25,0.5,0.75),col="red",lwd=c(1,2,3))
+    #     }})
 
+    # output$huplot <- renderPlot({
+    #     print(hp())
+    # })
+### archived code of plot ### 
     output$huplot <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-        # spp.Hg<<-CPUE.sims.SPP(index,1000,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
-        huPlot<<-plot(pam(spp.Hg$D.matrix,2,diss=TRUE), main="HUBERT's GAMMA used for cluster assignment")
-        abline(v=c(0.25,0.5,0.75),col="red",lwd=c(1,2,3))
-        print(huPlot)
+            pp <- pam(spp.Hg$D.matrix,2,diss=TRUE)
+            hp <- fviz_silhouette(pp)
+            print(hp)
         }
     })
         # Download Hubert's gamma plot #
     output$huplotDownload <- downloadHandler(
+#if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
         filename = "hub.png",
         content = function(file) {
             png(file)
-            print(huPlot)
+            print(hp())
             dev.off()
-            })
+        })
 
 #### Plot: 
     # Avg.Sil
@@ -131,14 +177,20 @@ mue_server <- function (input, output) {
 #### Based on the result above, allow user to choose number of cluster
 
 
+## fviz_silhouette(pp)
+
     output$silplot <- renderPlot({
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-        # spp.Sil<-CPUE.sims.SPP(index,1000,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T) 
+        ### Archived plot code ###
+        ## spp.Sil<-CPUE.sims.SPP(index,1000,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T) 
         
-        # 2 after the matrix is the number of the user that user wants to choose
-        silPlot <- plot(pam(spp.Sil$D.matrix,2,diss=TRUE), main="SILHOUETTE used for cluster assignment")
-        abline(v=c(0.25,0.5,0.75),col="red",lwd=c(1,2,3))
-        print(silPlot)
+        # # 2 after the matrix is the number of the user that user wants to choose
+        # silPlot <- plot(pam(spp.Sil$D.matrix,2,diss=TRUE), main="SILHOUETTE used for cluster assignment")
+        # abline(v=c(0.25,0.5,0.75),col="red",lwd=c(1,2,3))
+        # print(silPlot)
+        spp <- pam(spp.Sil$D.matrix,2,diss=TRUE)
+        sp <- fviz_silhouette(pp)
+        print(sp)
         }
     })
 

@@ -26,13 +26,18 @@ mue_ui <- fluidPage(
                     # 1 for Hubert's Gamma; 0 for Silhouette
                     1, 0
                 )),
-    textInput("noC", "Number of Clusters"),
-    verbatimTextOutput("Number of Clusters"),
+    textInput("noS", "Number of Simulations"),
+    verbatimTextOutput("Number of Simulation"),
+
+    ### Action buttons ###
+    # actionButton("rd", "Display input data plots"),
     # Display the results
     mainPanel(
         tableOutput("rawData"),
         plotOutput("inputData1"),
+        plotOutput("inputData2"),
         downloadLink("rawDataDownload", "Download Raw Data Plot"),
+        downloadLink("rawDataDownloadCV", "Download Raw Data CV Plot"),
         plotOutput("huplot"),
         downloadLink("huplotDownload", "Download Hubert's Gamma Plot"),
         plotOutput("silplot"),
