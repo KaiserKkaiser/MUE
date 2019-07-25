@@ -30,7 +30,10 @@ mue_ui <- fluidPage(
     verbatimTextOutput("Number of Simulation"),
 
     ### Action buttons ###
-    # actionButton("rd", "Display input data plots"),
+    actionButton("rd", "Display result plots"),
+    ## Second part, choose the number of cluseters##
+    textInput("noC", "Number of Clusters"),
+    verbatimTextOutput("Number of Clusters"),
     # Display the results
     mainPanel(
         tableOutput("rawData"),

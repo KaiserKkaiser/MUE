@@ -19,7 +19,7 @@ mue_server <- function (input, output) {
 
     # output$contents <- renderTable({
         # Display the data as a table; testing method
-    M_vals_all<- reactive({
+    M_vals_all<- eventReactive(input$rd,{
     inFile <- input$file1
     if(is.null(inFile))
         return(NULL)
@@ -54,31 +54,29 @@ mue_server <- function (input, output) {
     #     }
     #     data <- data.frame(newY, newA, color)
     #     data
-    #     # numberOfCluster <- as.numeric(input$noC)
-    #     # numberOfCluster
     # })
 
  ### Plot the input values when people upload a file ###
     output$inputData1 <- renderPlot({
-        inFile <- input$file1
-        if(!is.null(input$file1)) {
-        newY <- years
-        newA <- index[, 1]
-        # newC is potentially the span
-        newC <- CVs[, 1]
-        color <- rep("Area1", times=length(years))
-        for(i in 2:length(index)) {
-            # newY <- newY.cbind(years)
-            # newA <- newA.cbine(index[, i])
-            newY <- c(newY, years)
-            newA <- c(newA, index[, i])
-            newC <- c(newC, CVs[, i])
-            color <- c(color, rep(paste0("Area", i), times=length(years)))
-        }
-        data <- data.frame(newY, newA, color)
-        rdp <<- reactive(ggplot(data, aes(x=newY, y=newA)) + geom_line(aes(colour=color)) + ggtitle("Area with respect of time(year)"))
-        print(rdp())
-        }
+            inFile <- input$file1
+            if(!is.null(input$file1)) {
+            newY <- years
+            newA <- index[, 1]
+            # newC is potentially the span
+            newC <- CVs[, 1]
+            color <- rep("Area1", times=length(years))
+            for(i in 2:length(index)) {
+                # newY <- newY.cbind(years)
+                # newA <- newA.cbine(index[, i])
+                newY <- c(newY, years)
+                newA <- c(newA, index[, i])
+                newC <- c(newC, CVs[, i])
+                color <- c(color, rep(paste0("Area", i), times=length(years)))
+            }
+            data <- data.frame(newY, newA, color)
+            rdp <<- reactive(ggplot(data, aes(x=newY, y=newA)) + geom_line(aes(colour=color)) + ggtitle("Area with respect of time(year)"))
+            print(rdp())
+            }
     })
 
     output$inputData2 <- renderPlot({
@@ -125,9 +123,9 @@ mue_server <- function (input, output) {
     #Hubert's gamma for the assignment clusters
     output$huresult <- renderUI({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-        numberOfCluster <- as.numeric(input$noC)
+        numberOfSimul <- as.numeric(input$noS)
         # 1000 here is the simulate population that user wants to run
-        spp.Hg<<-CPUE.sims.SPP(index,numberOfCluster,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
+        spp.Hg<<-CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
         spp.Hg
         }
     })
@@ -151,12 +149,17 @@ mue_server <- function (input, output) {
     # output$huplot <- renderPlot({
     #     print(hp())
     # })
-### archived code of plot ### 
+### archived code of plot ###
+
+#Question TODO: For Avg, there's already avg line on it, what should we draw?
     output$huplot <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-            pp <- pam(spp.Hg$D.matrix,2,diss=TRUE)
+            numberOfCluster <- as.numeric(input$noC)
+            pp <- pam(spp.Hg$D.matrix,numberOfCluster,diss=TRUE)
             hp <- fviz_silhouette(pp)
-            print(hp)
+            avghp <- dcast(hp$data,cluster~1,mean,value.var ="sil_width")
+            print(hp + geom_hline(yintercept=0.27, linetype="dashed", 
+                color = "red", size=1))
         }
     })
         # Download Hubert's gamma plot #
@@ -174,20 +177,9 @@ mue_server <- function (input, output) {
     # Hubert 
     # horizontal: the number of cluster - Final.Cluster.Stats;
                     # or maybe just take the length of the vertical data, then start at 2
-#### Based on the result above, allow user to choose number of cluster
-
-
-## fviz_silhouette(pp)
 
     output$silplot <- renderPlot({
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-        ### Archived plot code ###
-        ## spp.Sil<-CPUE.sims.SPP(index,1000,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T) 
-        
-        # # 2 after the matrix is the number of the user that user wants to choose
-        # silPlot <- plot(pam(spp.Sil$D.matrix,2,diss=TRUE), main="SILHOUETTE used for cluster assignment")
-        # abline(v=c(0.25,0.5,0.75),col="red",lwd=c(1,2,3))
-        # print(silPlot)
         spp <- pam(spp.Sil$D.matrix,2,diss=TRUE)
         sp <- fviz_silhouette(pp)
         print(sp)
