@@ -41,9 +41,14 @@ mue_ui <- fluidPage(
         plotOutput("inputData2"),
         downloadLink("rawDataDownload", "Download Raw Data Plot"),
         downloadLink("rawDataDownloadCV", "Download Raw Data CV Plot"),
+        
+        plotOutput("comparePlotHu"),
+        plotOutput("comparePlotSil"),
+
         plotOutput("huplot"),
         downloadLink("huplotDownload", "Download Hubert's Gamma Plot"),
         plotOutput("silplot"),
+        downloadLink("silplotDownload", "Download Silhouette plot"),
         uiOutput("huresult"),
         uiOutput("silhresult")
     )

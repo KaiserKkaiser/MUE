@@ -57,6 +57,8 @@ mue_server <- function (input, output) {
     # })
 
  ### Plot the input values when people upload a file ###
+
+ ################ Initialize data and plot raw data and sample data ###############
     output$inputData1 <- renderPlot({
             inFile <- input$file1
             if(!is.null(input$file1)) {
@@ -118,8 +120,8 @@ mue_server <- function (input, output) {
             dev.off()
         })
 
- ### Let the user to choose either of the methods
 
+ ################################ Run The Result #################################
     #Hubert's gamma for the assignment clusters
     output$huresult <- renderUI({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
@@ -137,6 +139,25 @@ mue_server <- function (input, output) {
         spp.Sil
         }
     })
+
+    ### Print Comparable Plot for User to Decide the nubmer of clusters ###
+    output$comparePlotHu <- renderPlot({
+        if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+            cpHU <- plot(c(2:(length(CVs)-1), spp.Hg$Final.Cluster.Stats$Avg.Hg), 
+                main="Average of HG with Areas", xlab = "Clusters", ylab = "Average Hubert Gamma")
+        }
+        print(cpHU)
+    })
+
+    output$comparePlotSil <- renderPlot({
+        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+            cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Avg.Sil), 
+                main="Average of Sil with Areas", xlab = "Clusters", ylab = "Average Silhouette")
+        }
+        print(cpSil)
+    })
+
+
 ### archived code of plot ### 
     # hp <- reactive({
     #     if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
@@ -164,7 +185,6 @@ mue_server <- function (input, output) {
     })
         # Download Hubert's gamma plot #
     output$huplotDownload <- downloadHandler(
-#if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
         filename = "hub.png",
         content = function(file) {
             png(file)
@@ -172,12 +192,7 @@ mue_server <- function (input, output) {
             dev.off()
         })
 
-#### Plot: 
-    # Avg.Sil
-    # Hubert 
-    # horizontal: the number of cluster - Final.Cluster.Stats;
-                    # or maybe just take the length of the vertical data, then start at 2
-
+    ## Silhouette's Plot##
     output$silplot <- renderPlot({
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
         spp <- pam(spp.Sil$D.matrix,2,diss=TRUE)
@@ -185,6 +200,15 @@ mue_server <- function (input, output) {
         print(sp)
         }
     })
+
+    # Download Sil plot #
+    output$silplotDownload <- downloadHandler(
+        filename = "sil.png",
+        content = function(file) {
+            png(file)
+            print(sp())
+            dev.off()
+        })
 
 
 
