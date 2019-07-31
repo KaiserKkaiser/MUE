@@ -155,15 +155,15 @@ mue_server <- function (input, output) {
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
             cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Avg.Sil), 
                 main="Average of Sil with Areas, Sil diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
-        }
         print(cpSil)
+        }
     })
     output$comparePlotSilHu <- renderPlot({
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
             cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Hubert.gamma), 
-                main="Average of Sil with Areas, Sil diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
+                main="Average of Sil with Areas, Sil diagonistc", xlab = "Clusters", ylab = "Average Silhouette")
+            print(cpSil)
         }
-        print(cpSil)
     })
 
 ####################### Let the User Run with Their Number of Clusters #########################
@@ -174,8 +174,10 @@ mue_server <- function (input, output) {
             pp <- pam(spp.Hg$D.matrix,numberOfCluster,diss=TRUE)
             hp <- fviz_silhouette(pp)
             avghp <- dcast(hp$data,cluster~1,mean,value.var ="sil_width")
-            print(hp + geom_hline(yintercept=0.27, linetype="dashed", 
-                color = "red", size=1))
+            for(i in 0:(numberOfCluster-1)) {
+                hp <- hp + geom_hline(yintercept = avghp[[2]][i])
+            }
+            print(hp)
         }
     })
         # Download Hubert's gamma plot #
@@ -183,26 +185,39 @@ mue_server <- function (input, output) {
         filename = "hub.png",
         content = function(file) {
             png(file)
-            print(hp())
+            print(hp)
             dev.off()
         })
 
     ## Silhouette's Plot##
     output$silplot <- renderPlot({
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-        spp <- pam(spp.Sil$D.matrix,2,diss=TRUE)
+        numberOfCluster <- as.numeric(input$noC)
+        spp <- pam(spp.Sil$D.matrix,numberOfCluster,diss=TRUE)
         sp <- fviz_silhouette(pp)
+        avgsp <- dcast(sp$data,cluster~1,mean,value.var ="sil_width")
+            for(i in 0:(numberOfCluster-1)) {
+                sp <- sp + geom_hline(yintercept = avgsp[[2]][i])
+            }
         print(sp)
         }
     })
-## Add lines of avg
     # Download Sil plot #
     output$silplotDownload <- downloadHandler(
         filename = "sil.png",
         content = function(file) {
             png(file)
-            print(sp())
+            print(sp)
             dev.off()
+        })
+    output$resultDownload <- downloadHandler(
+        filename = "finalResult.txt",
+        content = function(file) {
+            if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+                writeLines(spp.Hg, file)
+            } else if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0){
+                writeLines(spp.Sil, file)
+            }
         })
 
 shinyServer(mue_server)

@@ -52,7 +52,8 @@ mue_ui <- fluidPage(
         plotOutput("silplot"),
         downloadLink("silplotDownload", "Download Silhouette plot"),
         uiOutput("huresult"),
-        uiOutput("silhresult")
+        uiOutput("silhresult"),
+        downloadLink("resultDownload", "Download final result")
     )
 )
 ## TODO: add display panel on the right
