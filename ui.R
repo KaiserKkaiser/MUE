@@ -45,8 +45,11 @@ mue_ui <- fluidPage(
         plotOutput("comparePlotHuHu"),
         downloadLink("cphh", "Download Compare Plot of Hubert Gamma Hu"),
         plotOutput("comparePlotHuSil"),
+        downloadLink("cphs", "Download Compare Plot of Silhouette Hu"),
         plotOutput("comparePlotSilSil"),
+        downloadLink("cpss", "Download Compare Plot of Silhouette Sil"),
         plotOutput("comparePlotSilHu"),
+        downloadLink("cpsh", "Download Compare Plot of Hubert Gamma Sil"),
 
         plotOutput("huplot"),
         downloadLink("huplotDownload", "Download Hubert's Gamma Plot"),

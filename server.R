@@ -158,24 +158,49 @@ mue_server <- function (input, output) {
 
     output$comparePlotHuSil <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-            cpHU <- plot(c(2:(length(CVs)-1), spp.Hg$Final.Cluster.Stats$Avg.Sil), 
-                main="Average of Avg with Areas, HG diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
+            dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Hg$Final.Cluster.Stats$Avg.Sil)
+            cpHU2 <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
+                xlab("Clusters") + ylab("Average Silhouette") +
+                ggtitle("Average of Sil with Areas, HG method")
         }
-        print(cpHU)
+        print(cpHU2)
     })
+
+    output$cphs <- downloadHandler(
+        filename = "cphs.png",
+        content = function(file) {
+            png(file)
+            print(cpHU2)
+            dev.off()
+        })
     ## Sil method ##
     output$comparePlotSilSil <- renderPlot({
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-            cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Avg.Sil), 
-                main="Average of Sil with Areas, Sil diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
-        print(cpSil)
+        #     cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Avg.Sil), 
+        #         main="Average of Sil with Areas, Sil diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
+        # print(cpSil)
+        dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Avg.Sil)
+            cpSil <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
+                xlab("Clusters") + ylab("Average Silhouette") +
+                ggtitle("Average of Sil with Areas, Sil diagonistic")
+            print(cpSil)
         }
     })
+
+    output$cpss <- downloadHandler(
+        filename = "cpss.png",
+        content = function(file) {
+            png(file)
+            print(cpSil)
+            dev.off()
+        })
     output$comparePlotSilHu <- renderPlot({
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-            cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Hubert.gamma), 
-                main="Average of Sil with Areas, Sil diagonistc", xlab = "Clusters", ylab = "Average Silhouette")
-            print(cpSil)
+            dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Hubert.gamma)
+            cpSil2 <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
+                xlab("Clusters") + ylab("Average HG") +
+                ggtitle("Average of HubertGamma with Areas, Sil diagonistc")
+            print(cpSil2)
         }
     })
 
