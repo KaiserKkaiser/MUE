@@ -42,8 +42,10 @@ mue_ui <- fluidPage(
         downloadLink("rawDataDownload", "Download Raw Data Plot"),
         downloadLink("rawDataDownloadCV", "Download Raw Data CV Plot"),
         
-        plotOutput("comparePlotHu"),
-        plotOutput("comparePlotSil"),
+        plotOutput("comparePlotHuHu"),
+        plotOutput("comparePlotHuSil"),
+        plotOutput("comparePlotSilSil"),
+        plotOutput("comparePlotSilHu"),
 
         plotOutput("huplot"),
         downloadLink("huplotDownload", "Download Hubert's Gamma Plot"),
@@ -53,5 +55,6 @@ mue_ui <- fluidPage(
         uiOutput("silhresult")
     )
 )
+## TODO: add display panel on the right
 shinyUI(mue_ui)
 }

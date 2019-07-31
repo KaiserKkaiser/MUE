@@ -3,7 +3,7 @@ library(shiny)
 if(!require(ggplot2)){install.packages("ggplot2")}
 if(!require(cluster)){install.packages("cluster")}
 if(!require(factoextra)) {install.packages("factoextra")}
-if(!require(reshape2)) {intall.packages("reshape2")}
+if(!require(reshape2)) {intall.packagesrt("reshape2")}
 library(ggplot2)
 source("MUE_code.r")
 mue_server <- function (input, output) {
@@ -67,8 +67,6 @@ mue_server <- function (input, output) {
             newC <- CVs[, 1]
             color <- rep("Area1", times=length(years))
             for(i in 2:length(index)) {
-                # newY <- newY.cbind(years)
-                # newA <- newA.cbine(index[, i])
                 newY <- c(newY, years)
                 newA <- c(newA, index[, i])
                 newC <- c(newC, CVs[, i])
@@ -89,8 +87,6 @@ mue_server <- function (input, output) {
         newC <- CVs[, 1]
         color <- rep("Area1", times=length(years))
         for(i in 2:length(index)) {
-            # newY <- newY.cbind(years)
-            # newA <- newA.cbine(index[, i])
             newY <- c(newY, years)
             newA <- c(newA, index[, i])
             newC <- c(newC, CVs[, i])
@@ -140,25 +136,38 @@ mue_server <- function (input, output) {
     })
 
     ### Print Comparable Plot for User to Decide the nubmer of clusters ###
-    output$comparePlotHu <- renderPlot({
+    output$comparePlotHuHu <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-            cpHU <- plot(c(2:(length(CVs)-1), spp.Hg$Final.Cluster.Stats$Avg.Hg), 
-                main="Average of HG with Areas", xlab = "Clusters", ylab = "Average Hubert Gamma")
+            cpHU <- plot(c(2:(length(CVs)-1), spp.Hg$Final.Cluster.Stats$Hubert.gamma), 
+                main="Average of HG with Areas, HG method", xlab = "Clusters", ylab = "Average Hubert Gamma")
         }
         print(cpHU)
     })
-
-    output$comparePlotSil <- renderPlot({
+    output$comparePlotHuSil <- renderPlot({
+        if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+            cpHU <- plot(c(2:(length(CVs)-1), spp.Hg$Final.Cluster.Stats$Avg.Sil), 
+                main="Average of Avg with Areas, HG diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
+        }
+        print(cpHU)
+    })
+    ## Sil method ##
+    output$comparePlotSilSil <- renderPlot({
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
             cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Avg.Sil), 
-                main="Average of Sil with Areas", xlab = "Clusters", ylab = "Average Silhouette")
+                main="Average of Sil with Areas, Sil diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
+        }
+        print(cpSil)
+    })
+    output$comparePlotSilHu <- renderPlot({
+        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+            cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Hubert.gamma), 
+                main="Average of Sil with Areas, Sil diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
         }
         print(cpSil)
     })
 
 ####################### Let the User Run with Their Number of Clusters #########################
 
-#Question TODO: For Avg, there's already avg line on it, what should we draw?
     output$huplot <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
             numberOfCluster <- as.numeric(input$noC)
@@ -186,7 +195,7 @@ mue_server <- function (input, output) {
         print(sp)
         }
     })
-
+## Add lines of avg
     # Download Sil plot #
     output$silplotDownload <- downloadHandler(
         filename = "sil.png",

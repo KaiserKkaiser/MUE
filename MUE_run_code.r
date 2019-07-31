@@ -19,3 +19,4 @@ spp.Sil<-CPUE.sims.SPP(index,1000,rep(1,length(index)),CVs,19,colnames(index),cu
 #Make silhouette plot
 plot(pam(spp.Sil$D.matrix,2,diss=TRUE), main="SILHOUETTE used for cluster assignment")
 abline(v=c(0.25,0.5,0.75),col="red",lwd=c(1,2,3))
+
