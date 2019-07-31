@@ -43,6 +43,7 @@ mue_ui <- fluidPage(
         downloadLink("rawDataDownloadCV", "Download Raw Data CV Plot"),
         
         plotOutput("comparePlotHuHu"),
+        downloadLink("cphh", "Download Compare Plot of Hubert Gamma Hu"),
         plotOutput("comparePlotHuSil"),
         plotOutput("comparePlotSilSil"),
         plotOutput("comparePlotSilHu"),
