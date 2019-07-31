@@ -138,8 +138,12 @@ mue_server <- function (input, output) {
     ### Print Comparable Plot for User to Decide the nubmer of clusters ###
     output$comparePlotHuHu <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-            cpHU <<- plot(c(2:(length(CVs)-1), spp.Hg$Final.Cluster.Stats$Hubert.gamma), 
-                main="Average of HG with Areas, HG method", xlab = "Clusters", ylab = "Average Hubert Gamma")
+            #cpHU <<- plot(c(2:(length(CVs)-1), spp.Hg$Final.Cluster.Stats$Hubert.gamma), 
+            #    main="Average of HG with Areas, HG method", xlab = "Clusters", ylab = "Average Hubert Gamma")
+            dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Hg$Final.Cluster.Stats$Hubert.gamma)
+            cpHU <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
+                xlab("Clusters") + ylab("Average Hubert Gamma") +
+                ggtitle("Average of HG with Areas, HG method")
         }
         print(cpHU)
     })
