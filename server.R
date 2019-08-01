@@ -79,6 +79,12 @@ mue_server <- function (input, output) {
     })
 
     output$inputData2 <- renderPlot({
+
+        if(!anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+        indexNum <- (((ncol(M_vals_all())-1)/2)+1)
+        index <<- M_vals_all()[, 2 : indexNum]
+        CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
+        years<<-M_vals_all()[,1]
         inFile <- input$file1
         if(!is.null(input$file1)) {
         newY <- years
@@ -95,6 +101,7 @@ mue_server <- function (input, output) {
         data2 <- data.frame(newY, newC, color)
         rdp2 <<- reactive(ggplot(data2, aes(x=newY, y=newC)) + geom_line(aes(colour=color)) + ggtitle("CV each Area with respect of time(year)"))
         print(rdp2())
+        }
         }
     })
 
