@@ -5,6 +5,8 @@ require(ggplot2)
 if(interactive()) {
 mue_ui <- fluidPage(
     titlePanel("MUE GUI"),
+    sidebarLayout(
+        sidebarPanel(
     # Browse files
     downloadButton("sample", "Sample Data Download"),
     fileInput("file1", "Choose MUE input file", 
@@ -33,33 +35,41 @@ mue_ui <- fluidPage(
     actionButton("rd", "Display result plots"),
     ## Second part, choose the number of cluseters##
     textInput("noC", "Number of Clusters"),
-    verbatimTextOutput("Number of Clusters"),
+    verbatimTextOutput("Number of Clusters")
+        ),
     # Display the results
     mainPanel(
+        tabsetPanel(
+            tabPanel("Raw Data First Glance",
         tableOutput("rawData"),
         plotOutput("inputData1"),
         plotOutput("inputData2"),
-        downloadLink("rawDataDownload", "Download Raw Data Plot"),
-        downloadLink("rawDataDownloadCV", "Download Raw Data CV Plot"),
-        
+        downloadButton("rawDataDownload", "Download Raw Data Plot"),
+        downloadButton("rawDataDownloadCV", "Download Raw Data CV Plot")
+        ),
+            tabPanel("Compare Plots",        
         plotOutput("comparePlotHuHu"),
-        downloadLink("cphh", "Download Compare Plot of Hubert Gamma Hu"),
+        downloadButton("cphh", "Download Compare Plot of Hubert Gamma Hu"),
         plotOutput("comparePlotHuSil"),
-        downloadLink("cphs", "Download Compare Plot of Silhouette Hu"),
+        downloadButton("cphs", "Download Compare Plot of Silhouette Hu"),
         plotOutput("comparePlotSilSil"),
-        downloadLink("cpss", "Download Compare Plot of Silhouette Sil"),
+        downloadButton("cpss", "Download Compare Plot of Silhouette Sil"),
         plotOutput("comparePlotSilHu"),
-        downloadLink("cpsh", "Download Compare Plot of Hubert Gamma Sil"),
+        downloadButton("cpsh", "Download Compare Plot of Hubert Gamma Sil")
+            ),
+            tabPanel("Final Result",
 
         plotOutput("huplot"),
-        downloadLink("huplotDownload", "Download Hubert's Gamma Plot"),
+        downloadButton("huplotDownload", "Download Hubert's Gamma Plot"),
         plotOutput("silplot"),
-        downloadLink("silplotDownload", "Download Silhouette plot"),
+        downloadButton("silplotDownload", "Download Silhouette plot"),
         uiOutput("huresult"),
         uiOutput("silhresult"),
-        downloadLink("resultDownload", "Download final result")
+        downloadButton("resultDownload", "Download final result")
+            )
+    )
     )
 )
-## TODO: add display panel on the right
+)
 shinyUI(mue_ui)
 }
