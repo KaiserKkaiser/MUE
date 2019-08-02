@@ -262,12 +262,12 @@ mue_server <- function (input, output) {
             dev.off()
         })
     output$resultDownload <- downloadHandler(
-        filename = "finalResult.txt",
+        filename = "finalResult.DMP",
         content = function(file) {
             if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-                writeLines(spp.Hg, file)
+                save(spp.Hg, file=file)
             } else if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0){
-                writeLines(spp.Sil, file)
+                save(spp.Sil, file=file)
             }
         })
 
