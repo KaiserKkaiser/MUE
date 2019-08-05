@@ -33,7 +33,7 @@ mue_server <- function (input, output) {
         index <<- M_vals_all()[, 2 : indexNum]
         CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
         years<<-M_vals_all()[,1]
-        CVs
+        M_vals_all()
         }
     })
 
