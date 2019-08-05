@@ -19,6 +19,7 @@ mue_ui <- fluidPage(
     ),
     buttonLabel = "Browse...",
     placeholder = "No file selected"),
+    actionButton("rs", "Data Read In"),
     radioButtons("button", "Choose cluster diagonistic", 
                 choiceNames = list(
                     "Hubert's Gamma",
@@ -41,6 +42,7 @@ mue_ui <- fluidPage(
     mainPanel(
         tabsetPanel(
             tabPanel("Raw Data First Glance",
+        tableOutput("contents"),
         tableOutput("rawData"),
         plotOutput("inputData1"),
         plotOutput("inputData2"),

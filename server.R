@@ -16,28 +16,43 @@ mue_server <- function (input, output) {
         }
     )
 
-    # output$contents <- renderTable({
-        # Display the data as a table; testing method
-    M_vals_all<- eventReactive(input$rd,{
-    inFile <- input$file1
-    if(is.null(inFile))
+     M_vals_all<- eventReactive(input$rs,{
+    inFile <<- input$file1
+    if(is.null(inFile)) {
         return(NULL)
+    }
     M_vals_all<- data.frame(read.csv(inFile$datapath, header = T))    
         # rv <- reactiveValues(index, CVs, years)
+        
     })
 
-    #### Uncomment to display raw data ##### Testing only #######
+    output$contents <- renderTable({
+        # Display the data as a table; testing method
+        if(!is.null(input$file1)){
+        indexNum <- (((ncol(M_vals_all())-1)/2)+1)
+        index <<- M_vals_all()[, 2 : indexNum]
+        CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
+        years<<-M_vals_all()[,1]
+        CVs
+        }
+    })
+
+    # ### Uncomment to display raw data ##### Testing only #######
     # output$rawData <- renderTable({
     #     if(!anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-    #     indexNum <- (((ncol(M_vals_all())-1)/2)+1)
-    #     index <<- M_vals_all()[, 2 : indexNum]
-    #     CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
-    #     years<<-M_vals_all()[,1]
+    #     # indexNum <- (((ncol(M_vals_all())-1)/2)+1)
+    #     # index <<- M_vals_all()[, 2 : indexNum]
+    #     # CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
+    #     # years<<-M_vals_all()[,1]
     #     # CVs
     #     # years
     #     # index
+    #     M_vals_all()
+    #     } else {
+    #         xx <- c(0, 1, 2)
+    #         xx
     #     }
-    #    #  M_vals_all()
+       #  M_vals_all()
     #    ans <- c(min(CVs), max(CVs))
     #    df <- data.frame(x=rep(1:5, 9), val=sample(1:100, 45), 
     #                variable=rep(paste0("category", 1:9), each=5))
@@ -53,7 +68,7 @@ mue_server <- function (input, output) {
     #     }
     #     data <- data.frame(newY, newA, color)
     #     data
-    # })
+     #})
 
  ### Plot the input values when people upload a file ###
 
@@ -61,6 +76,14 @@ mue_server <- function (input, output) {
     output$inputData1 <- renderPlot({
             inFile <- input$file1
             if(!is.null(input$file1)) {
+                # M_vals_all<- data.frame(read.csv(inFile$datapath, header = T))
+                # indexNum <- (((ncol(M_vals_all())-1)/2)+1)
+                # index <<- M_vals_all()[, 2 : indexNum]
+                # CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
+                # years<<-M_vals_all()[,1]
+
+
+
             newY <- years
             newA <- index[, 1]
             # newC is potentially the span
@@ -80,7 +103,7 @@ mue_server <- function (input, output) {
 
     output$inputData2 <- renderPlot({
 
-        if(!anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+        if(!anyNA(M_vals_all()) && length(M_vals_all) > 0) {
         indexNum <- (((ncol(M_vals_all())-1)/2)+1)
         index <<- M_vals_all()[, 2 : indexNum]
         CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
