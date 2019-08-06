@@ -58,6 +58,8 @@ mue_ui <- fluidPage(
         plotOutput("comparePlotSilHu"),
         downloadButton("cpsh", "Download Compare Plot of Hubert Gamma Sil")
             ),
+            uiOutput("huresult"),
+            uiOutput("silhresult"),
             tabPanel("Final Result",
 
         plotOutput("huplot"),
