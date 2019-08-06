@@ -167,7 +167,7 @@ mue_server <- function (input, output) {
 
     ### Print Comparable Plot for User to Decide the nubmer of clusters ###
     output$comparePlotHuHu <- renderPlot({
-        if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+        if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfSimul <- as.numeric(input$noS)
         # 1000 here is the simulate population that user wants to run
         spp.Hg<<-CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
@@ -190,7 +190,7 @@ mue_server <- function (input, output) {
         })
 
     output$comparePlotHuSil <- renderPlot({
-        if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+        if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Hg$Final.Cluster.Stats$Avg.Sil)
             cpHU2 <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
                 xlab("Clusters") + ylab("Average Silhouette") +
@@ -208,7 +208,7 @@ mue_server <- function (input, output) {
         })
     ## Sil method ##
     output$comparePlotSilSil <- renderPlot({
-        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
         #     cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Avg.Sil), 
         #         main="Average of Sil with Areas, Sil diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
         # print(cpSil)
@@ -231,7 +231,7 @@ mue_server <- function (input, output) {
             dev.off()
         })
     output$comparePlotSilHu <- renderPlot({
-        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Hubert.gamma)
             cpSil2 <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
                 xlab("Clusters") + ylab("Average HG") +
@@ -249,7 +249,7 @@ mue_server <- function (input, output) {
 ####################### Let the User Run with Their Number of Clusters #########################
 
     output$huplot <- renderPlot({
-        if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+        if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfCluster <- as.numeric(input$noC)
             pp <- pam(spp.Hg$D.matrix,numberOfCluster,diss=TRUE)
             hp <<- fviz_silhouette(pp)
@@ -271,7 +271,7 @@ mue_server <- function (input, output) {
 
     ## Silhouette's Plot##
     output$silplot <- renderPlot({
-        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfCluster <- as.numeric(input$noC)
             spp <- pam(spp.Sil$D.matrix,numberOfCluster,diss=TRUE)
             sp <<- fviz_silhouette(spp)
@@ -293,7 +293,7 @@ mue_server <- function (input, output) {
     output$resultDownload <- downloadHandler(
         filename = "finalResult.DMP",
         content = function(file) {
-            if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+            if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
                 save(spp.Hg, file=file)
             } else if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0){
                 save(spp.Sil, file=file)
