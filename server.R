@@ -16,7 +16,7 @@ mue_server <- function (input, output) {
         }
     )
 
-     M_vals_all<- eventReactive(input$rs,{
+     M_vals_all<- eventReactive(input$file1,{
     inFile <<- input$file1
     if(is.null(inFile)) {
         return(NULL)
@@ -268,7 +268,7 @@ mue_server <- function (input, output) {
         if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
             numberOfCluster <- as.numeric(input$noC)
             spp <- pam(spp.Sil$D.matrix,numberOfCluster,diss=TRUE)
-            sp <<- fviz_silhouette(pp)
+            sp <<- fviz_silhouette(spp)
             avgsp <- dcast(sp$data,cluster~1,mean,value.var ="sil_width")
             for(i in 0:(numberOfCluster-1)) {
                 sp <- sp + geom_hline(yintercept = avgsp[[2]][i])

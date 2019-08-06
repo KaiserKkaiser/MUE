@@ -19,7 +19,6 @@ mue_ui <- fluidPage(
     ),
     buttonLabel = "Browse...",
     placeholder = "No file selected"),
-    actionButton("rs", "Data Read In"),
     radioButtons("button", "Choose cluster diagonistic", 
                 choiceNames = list(
                     "Hubert's Gamma",
