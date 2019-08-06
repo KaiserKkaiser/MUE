@@ -76,11 +76,11 @@ mue_server <- function (input, output) {
     output$inputData1 <- renderPlot({
             inFile <- input$file1
             if(!is.null(input$file1)) {
-                # M_vals_all<- data.frame(read.csv(inFile$datapath, header = T))
-                # indexNum <- (((ncol(M_vals_all())-1)/2)+1)
-                # index <<- M_vals_all()[, 2 : indexNum]
-                # CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
-                # years<<-M_vals_all()[,1]
+                M_vals_all<- data.frame(read.csv(inFile$datapath, header = T))
+                indexNum <- (((ncol(M_vals_all())-1)/2)+1)
+                index <<- M_vals_all()[, 2 : indexNum]
+                CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
+                years<<-M_vals_all()[,1]
 
 
 
