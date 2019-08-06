@@ -168,6 +168,9 @@ mue_server <- function (input, output) {
     ### Print Comparable Plot for User to Decide the nubmer of clusters ###
     output$comparePlotHuHu <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+            numberOfSimul <- as.numeric(input$noS)
+        # 1000 here is the simulate population that user wants to run
+        spp.Hg<<-CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
             #cpHU <<- plot(c(2:(length(CVs)-1), spp.Hg$Final.Cluster.Stats$Hubert.gamma), 
             #    main="Average of HG with Areas, HG method", xlab = "Clusters", ylab = "Average Hubert Gamma")
             dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Hg$Final.Cluster.Stats$Hubert.gamma)
@@ -209,6 +212,9 @@ mue_server <- function (input, output) {
         #     cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Avg.Sil), 
         #         main="Average of Sil with Areas, Sil diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
         # print(cpSil)
+        numberOfSimul <- as.numeric(input$noS)
+        spp.Sil<<- CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T)
+        
         dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Avg.Sil)
             cpSil <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
                 xlab("Clusters") + ylab("Average Silhouette") +
