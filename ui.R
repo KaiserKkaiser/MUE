@@ -48,7 +48,7 @@ mue_ui <- fluidPage(
         downloadButton("rawDataDownload", "Download Raw Data Plot"),
         downloadButton("rawDataDownloadCV", "Download Raw Data CV Plot")
         ),
-            tabPanel("Compare Plots",        
+        tabPanel("Compare Plots",        
         plotOutput("comparePlotHuHu"),
         downloadButton("cphh", "Download Compare Plot of Hubert Gamma Hu"),
         plotOutput("comparePlotHuSil"),
@@ -58,10 +58,9 @@ mue_ui <- fluidPage(
         plotOutput("comparePlotSilHu"),
         downloadButton("cpsh", "Download Compare Plot of Hubert Gamma Sil")
             ),
-            uiOutput("huresult"),
-            uiOutput("silhresult"),
-            tabPanel("Final Result",
-
+            # uiOutput("huresult"),
+            # uiOutput("silhresult"),
+        tabPanel("Final Result",
         plotOutput("huplot"),
         downloadButton("huplotDownload", "Download Hubert's Gamma Plot"),
         plotOutput("silplot"),

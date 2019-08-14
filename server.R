@@ -26,16 +26,16 @@ mue_server <- function (input, output) {
         
     })
 
-    output$contents <- renderTable({
-        # Display the data as a table; testing method
-        if(!is.null(input$file1)){
-        indexNum <- (((ncol(M_vals_all())-1)/2)+1)
-        index <<- M_vals_all()[, 2 : indexNum]
-        CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
-        years<<-M_vals_all()[,1]
-        M_vals_all()
-        }
-    })
+    # output$contents <- renderTable({
+    #     # Display the data as a table; testing method
+    #     if(!is.null(input$file1)){
+    #     indexNum <- (((ncol(M_vals_all())-1)/2)+1)
+    #     index <<- M_vals_all()[, 2 : indexNum]
+    #     CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
+    #     years<<-M_vals_all()[,1]
+    #     M_vals_all()
+    #     }
+    # })
 
     # ### Uncomment to display raw data ##### Testing only #######
     # output$rawData <- renderTable({
@@ -81,9 +81,6 @@ mue_server <- function (input, output) {
                 index <<- M_vals_all()[, 2 : indexNum]
                 CVs<<-M_vals_all()[,(((ncol(M_vals_all())-1)/2)+2):ncol(M_vals_all())]
                 years<<-M_vals_all()[,1]
-
-
-
             newY <- years
             newA <- index[, 1]
             # newC is potentially the span
@@ -96,7 +93,7 @@ mue_server <- function (input, output) {
                 color <- c(color, rep(paste0("Area", i), times=length(years)))
             }
             data <- data.frame(newY, newA, color)
-            rdp <<- reactive(ggplot(data, aes(x=newY, y=newA)) + geom_line(aes(colour=color)) + ggtitle("Area with respect of time(year)"))
+            rdp <<- reactive(ggplot(data, aes(x=newY, y=newA)) + geom_line(aes(colour=color), size=1) + ggtitle("Area with respect of time(year)") + theme_light())
             print(rdp())
             }
     })
@@ -122,7 +119,7 @@ mue_server <- function (input, output) {
             color <- c(color, rep(paste0("Area", i), times=length(years)))
         }
         data2 <- data.frame(newY, newC, color)
-        rdp2 <<- reactive(ggplot(data2, aes(x=newY, y=newC)) + geom_line(aes(colour=color)) + ggtitle("CV each Area with respect of time(year)"))
+        rdp2 <<- reactive(ggplot(data2, aes(x=newY, y=newC)) + geom_line(aes(colour=color), size=1) + ggtitle("CV each Area with respect of time(year)") + theme_light())
         print(rdp2())
         }
         }
