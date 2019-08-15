@@ -9,6 +9,7 @@ mue_ui <- fluidPage(
         sidebarPanel(
     # Browse files
     downloadButton("sample", "Sample Data Download"),
+    p("Note: Input data must have no less than 3 areas data.", style = "font-family: 'times'; font-si18pt")
     fileInput("file1", "Choose MUE input file", 
     multiple = FALSE, 
     accept = c(
