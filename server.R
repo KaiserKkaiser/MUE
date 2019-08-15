@@ -167,7 +167,14 @@ mue_server <- function (input, output) {
     output$comparePlotHuHu <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfSimul <- as.numeric(input$noS)
-        spp.Hg<<-CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
+            ## Progress bar
+            progress <<- shiny::Progress$new()
+            on.exit(progress$close())
+            progress$set(message = "Running", value = 0)
+            ## Progress bar
+
+
+            spp.Hg<<-CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
             dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Hg$Final.Cluster.Stats$Hubert.gamma)
             cpHU <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
                 xlab("Clusters") + ylab("Average Hubert Gamma") +
@@ -175,6 +182,11 @@ mue_server <- function (input, output) {
             print(cpHU)
         } else if (input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfSimul <- as.numeric(input$noS)
+            ## Progress bar
+            progress <<- shiny::Progress$new()
+            on.exit(progress$close())
+            progress$set(message = "Running", value = 0)
+            ## Progress bar
             spp.Sil<<- CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T)
             dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Avg.Sil)
             cpSil <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +

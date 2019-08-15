@@ -9,7 +9,7 @@ mue_ui <- fluidPage(
         sidebarPanel(
     # Browse files
     downloadButton("sample", "Sample Data Download"),
-    p("Note: Input data must have no less than 3 areas data.", style = "font-family: 'times'; font-si18pt")
+    # p("Note: Input data must have no less than 3 areas data.", style = "font-family: 'times'; font-si18pt"),
     fileInput("file1", "Choose MUE input file", 
     multiple = FALSE, 
     accept = c(
@@ -20,6 +20,7 @@ mue_ui <- fluidPage(
     ),
     buttonLabel = "Browse...",
     placeholder = "No file selected"),
+    p("Note: Input data must have no less than 3 areas.", style = "font-family: 'calibri'; font-si20pt"),
     radioButtons("button", "Choose cluster diagonistic", 
                 choiceNames = list(
                     "Hubert's Gamma",

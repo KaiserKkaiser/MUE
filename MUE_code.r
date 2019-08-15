@@ -60,6 +60,10 @@ CPUE.sims.SPP<-function(Trend_true,Nsims,num.by.pop,CVs_in,seed.num=15,label,cut
 for (i in 1:Nsims)
     {
     print(i)
+    ## Code added for progress bar head ##
+    progress$inc(1/Nsims, detail = paste("Doing", i, "simulation(s)"))
+    ## Code added for progress bar tail ##
+
     sim.CPUE<-matrix(nrow=(dim(Trend_true)[1]),ncol=1)
     #Generate CPUE trends
     for(j in 1:dim(Trend_true)[2])
