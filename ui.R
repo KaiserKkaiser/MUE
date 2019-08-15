@@ -32,7 +32,7 @@ mue_ui <- fluidPage(
     verbatimTextOutput("Number of Simulation"),
 
     ### Action buttons ###
-    actionButton("rd", "Display result plots"),
+    actionButton("rd", "Run Diagonistics"),
     ## Second part, choose the number of cluseters##
     textInput("noC", "Number of Clusters"),
     verbatimTextOutput("Number of Clusters")
@@ -41,33 +41,26 @@ mue_ui <- fluidPage(
     mainPanel(
         tabsetPanel(
             tabPanel("Raw Data First Glance",
-        tableOutput("contents"),
-        tableOutput("rawData"),
+        # tableOutput("contents"),
+        # tableOutput("rawData"),
         plotOutput("inputData1"),
-        plotOutput("inputData2"),
         downloadButton("rawDataDownload", "Download Raw Data Plot"),
+        plotOutput("inputData2"),
         downloadButton("rawDataDownloadCV", "Download Raw Data CV Plot")
         ),
-        tabPanel("Compare Plots",        
+        tabPanel("Compare Plots",
+        p("Below are plots that show how many clusters are best supported by the data for two cluster validity diagnostics:", style = "font-family: 'times'; font-si18pt"),
+        p("1) Hubert gamma ", span("(top panel)", style = "color:grey"), "2) Silhouette ", span("(bottom panel)", style = "color:grey"), ". ", style = "font-family: 'times'; font-si18pt"),
+        p("The cluster with the highest value is best supported by the data and can be used to determine the final number of clusters to input into the \"Number of Clusters\" box on the left."),
         plotOutput("comparePlotHuHu"),
-        downloadButton("cphh", "Download Compare Plot of Hubert Gamma Hu"),
+        downloadButton("cphh", "Download Cluster Validity plot for Hubert Gamma metric"),
         plotOutput("comparePlotHuSil"),
-        downloadButton("cphs", "Download Compare Plot of Silhouette Hu"),
-        plotOutput("comparePlotSilSil"),
-        downloadButton("cpss", "Download Compare Plot of Silhouette Sil"),
-        plotOutput("comparePlotSilHu"),
-        downloadButton("cpsh", "Download Compare Plot of Hubert Gamma Sil")
-            ),
-            # uiOutput("huresult"),
-            # uiOutput("silhresult"),
+        downloadButton("cphs", "Download Cluster Validity plot for Silhouette metric")
+       ),
         tabPanel("Final Result",
         plotOutput("huplot"),
-        downloadButton("huplotDownload", "Download Hubert's Gamma Plot"),
-        plotOutput("silplot"),
-        downloadButton("silplotDownload", "Download Silhouette plot"),
-        uiOutput("huresult"),
-        uiOutput("silhresult"),
-        downloadButton("resultDownload", "Download final result")
+        downloadButton("huplotDownload", "Download Plot"),
+        downloadButton("resultDownload", "Download final result(.DMP)")
             )
     )
     )

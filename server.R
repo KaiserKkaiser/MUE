@@ -144,105 +144,87 @@ mue_server <- function (input, output) {
 
 
  ################################ Run The Result #################################
-    #Hubert's gamma for the assignment clusters
-    output$huresult <- renderUI({
-        if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-        numberOfSimul <- as.numeric(input$noS)
-        # 1000 here is the simulate population that user wants to run
-        spp.Hg<<-CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
-        spp.Hg
-        }
-    })
+    # #Hubert's gamma for the assignment clusters
+    # output$huresult <- renderUI({
+    #     if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+    #     numberOfSimul <- as.numeric(input$noS)
+    #     spp.Hg<<-CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
+    #     spp.Hg
+    #     }
+    # })
 
-    output$silhresult <- renderUI({
-        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
-        numberOfSimul <- as.numeric(input$noS)
-        spp.Sil<<- CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T)
-        spp.Sil
-        }
-    })
+    # output$silhresult <- renderUI({
+    #     if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0) {
+    #     numberOfSimul <- as.numeric(input$noS)
+    #     spp.Sil<<- CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T)
+    #     spp.Sil
+    #     }
+    # })
 
     ### Print Comparable Plot for User to Decide the nubmer of clusters ###
+
+    ## Output Hubert Gamma ##
     output$comparePlotHuHu <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfSimul <- as.numeric(input$noS)
-        # 1000 here is the simulate population that user wants to run
         spp.Hg<<-CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=2,Z_score=T)
-            #cpHU <<- plot(c(2:(length(CVs)-1), spp.Hg$Final.Cluster.Stats$Hubert.gamma), 
-            #    main="Average of HG with Areas, HG method", xlab = "Clusters", ylab = "Average Hubert Gamma")
             dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Hg$Final.Cluster.Stats$Hubert.gamma)
             cpHU <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
                 xlab("Clusters") + ylab("Average Hubert Gamma") +
-                ggtitle("Average of HG with Areas, HG method")
+                ggtitle("Hubert Gamma")
+            print(cpHU)
+        } else if (input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
+            numberOfSimul <- as.numeric(input$noS)
+            spp.Sil<<- CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T)
+            dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Avg.Sil)
+            cpSil <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
+                xlab("Clusters") + ylab("Average Silhouette") +
+                ggtitle("Silhouette")
+            print(cpSil)
         }
-        print(cpHU)
+        
     })
 
     output$cphh <- downloadHandler(
-        filename = "cphh.png",
+        filename = "cpHubertGamma.png",
         content = function(file) {
             png(file)
-            print(cpHU)
+            if(input$button == 1) {
+                print(cpHU)
+            } else {
+                print(cpHU2)
+            }
             dev.off()
         })
-
+    ## Output Silhouette ##
     output$comparePlotHuSil <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Hg$Final.Cluster.Stats$Avg.Sil)
             cpHU2 <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
                 xlab("Clusters") + ylab("Average Silhouette") +
-                ggtitle("Average of Sil with Areas, HG method")
+                ggtitle("Silhouette")
+            print(cpHU2)
+        } else if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
+            dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Hubert.gamma)
+            cpSil2 <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
+                xlab("Clusters") + ylab("Average HG") +
+                ggtitle("Hubert Gamma")
+            print(cpSil2)
         }
-        print(cpHU2)
     })
 
     output$cphs <- downloadHandler(
         filename = "cphs.png",
         content = function(file) {
             png(file)
+            if(input$button == 1) {
             print(cpHU2)
+            } else {
+                print(cpSil2)
+            }
             dev.off()
         })
-    ## Sil method ##
-    output$comparePlotSilSil <- renderPlot({
-        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
-        #     cpSil <- plot(c(2:(length(CVs)-1), spp.Sil$Final.Cluster.Stats$Avg.Sil), 
-        #         main="Average of Sil with Areas, Sil diagonistic", xlab = "Clusters", ylab = "Average Silhouette")
-        # print(cpSil)
-        numberOfSimul <- as.numeric(input$noS)
-        spp.Sil<<- CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T)
-        
-        dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Avg.Sil)
-            cpSil <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
-                xlab("Clusters") + ylab("Average Silhouette") +
-                ggtitle("Average of Sil with Areas, Sil diagonistic")
-            print(cpSil)
-        }
-    })
 
-    output$cpss <- downloadHandler(
-        filename = "cpss.png",
-        content = function(file) {
-            png(file)
-            print(cpSil)
-            dev.off()
-        })
-    output$comparePlotSilHu <- renderPlot({
-        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
-            dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Hubert.gamma)
-            cpSil2 <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
-                xlab("Clusters") + ylab("Average HG") +
-                ggtitle("Average of HubertGamma with Areas, Sil diagonistc")
-            print(cpSil2)
-        }
-    })
-    output$cpsh <- downloadHandler(
-        filename = "cpsh.png",
-        content = function(file) {
-            png(file)
-            print(cpSil2)
-            dev.off()
-        })
 ####################### Let the User Run with Their Number of Clusters #########################
 
     output$huplot <- renderPlot({
@@ -255,20 +237,7 @@ mue_server <- function (input, output) {
                 hp <- hp + geom_hline(yintercept = avghp[[2]][i])
             }
             print(hp)
-        }
-    })
-        # Download Hubert's gamma plot #
-    output$huplotDownload <- downloadHandler(
-        filename = "hub.png",
-        content = function(file) {
-            png(file)
-            print(hp)
-            dev.off()
-        })
-
-    ## Silhouette's Plot##
-    output$silplot <- renderPlot({
-        if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
+        } else if (input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfCluster <- as.numeric(input$noC)
             spp <- pam(spp.Sil$D.matrix,numberOfCluster,diss=TRUE)
             sp <<- fviz_silhouette(spp)
@@ -279,14 +248,19 @@ mue_server <- function (input, output) {
             print(sp)
         }
     })
-    # Download Sil plot #
-    output$silplotDownload <- downloadHandler(
-        filename = "sil.png",
+        # Download Hubert's gamma plot #
+    output$huplotDownload <- downloadHandler(
+        filename = "finalResult.png",
         content = function(file) {
             png(file)
-            print(sp)
+            if(input$button == 0) {
+                print(hp)
+            } else {
+                print(sp)
+            }
             dev.off()
         })
+
     output$resultDownload <- downloadHandler(
         filename = "finalResult.DMP",
         content = function(file) {
