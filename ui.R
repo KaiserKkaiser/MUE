@@ -32,9 +32,9 @@ mue_ui <- fluidPage(
                 )),
     textInput("noS", "Number of Simulations"),
     verbatimTextOutput("Number of Simulation"),
-
     ### Action buttons ###
     actionButton("rd", "Run Diagonistics"),
+    p("Go to RUN MUE panel to see the result."),
     ## Second part, choose the number of cluseters##
     textInput("noC", "Number of Clusters"),
     verbatimTextOutput("Number of Clusters")
@@ -50,7 +50,7 @@ mue_ui <- fluidPage(
         plotOutput("inputData2"),
         downloadButton("rawDataDownloadCV", "Download Raw Data CV Plot")
         ),
-        tabPanel("Compare Plots",
+        tabPanel("RUN MUE",
         p("Below are plots that show how many clusters are best supported by the data for two cluster validity diagnostics:", style = "font-family: 'times'; font-si18pt"),
         p("1) Hubert gamma ", span("(top panel)", style = "color:grey"), "2) Silhouette ", span("(bottom panel)", style = "color:grey"), ". ", style = "font-family: 'times'; font-si18pt"),
         p("The cluster with the highest value is best supported by the data and can be used to determine the final number of clusters to input into the \"Number of Clusters\" box on the left."),
