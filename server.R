@@ -185,7 +185,8 @@ mue_server <- function (input, output) {
             dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Hg$Final.Cluster.Stats$Hubert.gamma)
             cpHU <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
                 xlab("Clusters") + ylab("Average Hubert Gamma") +
-                ggtitle("Hubert Gamma")
+                ggtitle("Hubert Gamma") + 
+                geom_point(aes(x=match(max(spp.Hg$Final.Cluster.Stats$Hubert.gamma), spp.Hg$Final.Cluster.Stats$Hubert.gamma)+1, y=max(spp.Hg$Final.Cluster.Stats$Hubert.gamma)), fill="blue", color="darkred", size=4, shape=23)
             print(cpHU)
         } else if (input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfSimul <- as.numeric(input$noS)
@@ -195,10 +196,11 @@ mue_server <- function (input, output) {
             progress$set(message = "Running", value = 0)
             ## Progress bar
             spp.Sil<<- CPUE.sims.SPP(index,numberOfSimul,rep(1,length(index)),CVs,19,colnames(index),cutoff=1,op.type=c(0,1,0,1,1,1,0,0),k.max.m=1,Z_score=T)
-            dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Avg.Sil)
+            dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Hubert.gamma)
             cpSil <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
-                xlab("Clusters") + ylab("Average Silhouette") +
-                ggtitle("Silhouette")
+                xlab("Clusters") + ylab("Average Hubert Gamma") +
+                ggtitle("Hubert Gamma") + 
+                geom_point(aes(x=match(max(spp.Sil$Final.Cluster.Stats$Hubert.gamma), spp.Sil$Final.Cluster.Stats$Hubert.gamma)+1, y=max(spp.Sil$Final.Cluster.Stats$Hubert.gamma)), fill="blue", color="darkred", size=4, shape=23)
             print(cpSil)
         }
         
@@ -221,13 +223,15 @@ mue_server <- function (input, output) {
             dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Hg$Final.Cluster.Stats$Avg.Sil)
             cpHU2 <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
                 xlab("Clusters") + ylab("Average Silhouette") +
-                ggtitle("Silhouette")
+                ggtitle("Silhouette") + 
+                geom_point(aes(x=match(max(spp.Hg$Final.Cluster.Stats$Avg.Sil), spp.Hg$Final.Cluster.Stats$Avg.Sil)+1, y=max(spp.Hg$Final.Cluster.Stats$Avg.Sil)), fill="blue", color="darkred", size=4, shape=23)
             print(cpHU2)
         } else if(input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
-            dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Hubert.gamma)
+            dataa <- data.frame(xv = c(2:(length(CVs)-1)), yv = spp.Sil$Final.Cluster.Stats$Avg.Sil)
             cpSil2 <<- ggplot(dataa, aes(x=xv, y=yv)) + geom_point(size = 3) +
-                xlab("Clusters") + ylab("Average HG") +
-                ggtitle("Hubert Gamma")
+                xlab("Clusters") + ylab("Average Silhouette") +
+                ggtitle("Silhouette") + 
+                geom_point(aes(x=match(max(spp.Sil$Final.Cluster.Stats$Avg.Sil), spp.Sil$Final.Cluster.Stats$Avg.Sil)+1, y=max(spp.Sil$Final.Cluster.Stats$Avg.Sil)), fill="blue", color="darkred", size=4, shape=23)
             print(cpSil2)
         }
     })
