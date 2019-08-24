@@ -67,9 +67,10 @@ mue_ui <- fluidPage(
        ),
         tabPanel("MUE",
         plotOutput("huplot"),
-        tableOutput("areaCluster"),
         downloadButton("huplotDownload", "Download Plot"),
-        downloadButton("resultDownload", "Download R object of results")
+        tableOutput("areaCluster"),
+        downloadButton("resultDownload", "Download R object of results"),
+        downloadButton("summaryTable", "Download summaryTable")
             )
     )
     )
