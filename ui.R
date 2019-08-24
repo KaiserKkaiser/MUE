@@ -25,6 +25,8 @@ mue_ui <- fluidPage(
     buttonLabel = "Browse...",
     placeholder = "No file selected"),
     p("Note: Input data must have no less than 3 areas.", style = "font-family: 'calibri'; font-si20pt"),
+    conditionalPanel(
+        condition = "input.conditionedPanels==2",
     radioButtons("button", "Choose cluster diagonistic", 
                 choiceNames = list(
                     "Hubert's Gamma",
@@ -37,13 +39,16 @@ mue_ui <- fluidPage(
     textInput("noS", "Number of Simulations"),
     verbatimTextOutput("Number of Simulation"),
     ### Action buttons ###
-    actionButton("rd", "Run Diagonistics"),
-    p("Go to \"RUN Cluster Validity Diagonistics\" panel to see the result.", style = "font-family: 'calibri'; font-si20pt"),
+    actionButton("rd", "Run Diagonistics")
+    ),
+    conditionalPanel(
+        condition = "input.conditionedPanels==3",
     ## Second part, choose the number of cluseters##
     textInput("noC", "Number of Clusters"),
     verbatimTextOutput("Number of Clusters"),
-    p("Go to \"MUE\" panel to see the final result of MUE based on the clusters.", style = "font-family: 'calibri'; font-si20pt")
-        ),
+    actionButton("rd", "Run Diagonistics")
+        )
+    ),
     
     # Display the results
     mainPanel(
@@ -54,7 +59,8 @@ mue_ui <- fluidPage(
         plotOutput("inputData1"),
         downloadButton("rawDataDownload", "Download Raw Data Plot"),
         plotOutput("inputData2"),
-        downloadButton("rawDataDownloadCV", "Download Raw Data CV Plot")
+        downloadButton("rawDataDownloadCV", "Download Raw Data CV Plot"),
+        value=1
         ),
         tabPanel("Run Cluster Validity Diagonistics",
         p("Below are plots that show how many clusters are best supported by the data for two cluster validity diagnostics:", style = "font-family: 'times'; font-si18pt"),
@@ -63,15 +69,17 @@ mue_ui <- fluidPage(
         plotOutput("comparePlotHuHu"),
         downloadButton("cphh", "Download Cluster Validity plot for Hubert Gamma metric"),
         plotOutput("comparePlotHuSil"),
-        downloadButton("cphs", "Download Cluster Validity plot for Silhouette metric")
+        downloadButton("cphs", "Download Cluster Validity plot for Silhouette metric"),
+        value=2
        ),
         tabPanel("MUE",
         plotOutput("huplot"),
         downloadButton("huplotDownload", "Download Plot"),
         tableOutput("areaCluster"),
         downloadButton("resultDownload", "Download R object of results"),
-        downloadButton("summaryTable", "Download summaryTable")
-            )
+        downloadButton("summaryTable", "Download summaryTable"),
+        value=3
+            ), id = "conditionedPanels"
     )
     )
 )
