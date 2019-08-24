@@ -289,12 +289,16 @@ mue_server <- function (input, output) {
         })
 
 
-######### Render Final Table #############
+######### Render Final Summary Table #############
     output$areaCluster <- renderTable({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
-
+            ClusterNumber <- pp$clustering
+            Locations <- c(1:length(pp$clustering))
+            pp$clustering <- data.frame(Locations,ClusterNumber)
         } else if (input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
-        
+            ClusterNumber <- spp$clustering
+            Locations <- c(1:length(spp$clustering))
+            spp$clustering <- data.frame(Locations,ClusterNumber)
         }
     })
 
