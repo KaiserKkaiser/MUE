@@ -257,8 +257,10 @@ mue_server <- function (input, output) {
             hp <<- fviz_silhouette(pp, label=TRUE)
             avghp <- dcast(hp$data,cluster~1,mean,value.var ="sil_width")
             for(i in 0:(numberOfCluster-1)) {
-                hp <- hp + geom_hline(yintercept = avghp[[2]][i])
+                hp <- hp + geom_hline(yintercept = avghp[[2]][i]) 
             }
+            hp <- hp + geom_hline(yintercept=0.25, size=1, color="green") + 
+                geom_hline(yintercept=0.5, size=1.5, color="green") + geom_hline(yintercept=0.75, size=2, color="green")
             print(hp)
         } else if (input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfCluster <- as.numeric(input$noC)
@@ -268,6 +270,8 @@ mue_server <- function (input, output) {
             for(i in 0:(numberOfCluster-1)) {
                 sp <- sp + geom_hline(yintercept = avgsp[[2]][i])
             }
+            sp <- sp + geom_hline(yintercept=0.25, size=1, color="green") + 
+                geom_hline(yintercept=0.5, size=1.5, color="green") + geom_hline(yintercept=0.75, size=2, color="green")
             print(sp)
         }
     })
