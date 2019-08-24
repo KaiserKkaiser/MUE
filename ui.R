@@ -5,8 +5,8 @@ require(ggplot2)
 if(interactive()) {
 mue_ui <- fluidPage(
     titlePanel("MUE GUI"),
-    p("The Management Unit Estimator (MUE) is a tool that looks for structure in indices of abundance given the amount of uncertainty contained in those indices. By including uncertainty in the clustering of yearly index values, this method takes into consideration both measurement and process error when determining population structure on ecological time scales. Results from this can help identify proper stock assessment or management units, as well as important localized dynamics relevant to other ecological studies."),
-    p("The MUE requires an input of relative or absolute abundance measures and the associated uncertainty measured as a coefficient of variation. An example of what the simple data input looks can be found by clicking on the \"Sample Data Download\"  button. Further reading on this method can be found in ", style="display:inline"),
+    p("The ", span("Management Unit Estimator (MUE)", style="font-weight:bold")," is a tool that looks for structure in indices of abundance given the amount of uncertainty contained in those indices. By including uncertainty in the clustering of yearly index values, this method takes into consideration both measurement and process error when determining population structure on ecological time scales. Results from this can help identify proper stock assessment or management units, as well as important localized dynamics relevant to other ecological studies."),
+    p("The MUE requires an input of relative or absolute abundance measures and the associated uncertainty measured as a coefficient of variation. An example of what the simple data input looks can be found by clicking on the ", span("Sample Data Download", style="font-family: 'times'"),  " button. Further reading on this method can be found in ", style="display:inline"),
     downloadLink("paper", "Cope and Punt 2009."),
     sidebarLayout(
         sidebarPanel(
