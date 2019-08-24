@@ -293,31 +293,31 @@ mue_server <- function (input, output) {
     output$areaCluster <- renderTable({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             # When plotting huber gamma
-            res <<- data.frame(location=rownames(pp$silinfo$widths), pp$silinfo$widths)
+            res <<- data.frame(pp$silinfo$widths)
             # Initialize Average for Silhouette
-            res[, "AverageSilhouette"] <- numeric(nrow(res()))
+            res[, "AverageSilhouette"] <- numeric(nrow(res))
             # Rename the length
             names(res) <- sub("^sil_width$", "IndividualSilhouette", names(res))
             names(res) <- sub("^cluster$", "Cluster", names(res))
             avg <<- data.frame(pp$silinfo$clus.avg.widths)
             for(row in 1:nrow(res)) {
-                res[row, 5] <- avg[res[row, 2],1]
-                # 5 is the column of Avg, 2 is the column of cluster
+                res[row, 4] <- avg[res[row, 1],1]
+                # 4 is the column of Avg, 1 is the column of cluster
             }
             res
         } else if (input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
-            res <<- data.frame(location=rownames(spp$silinfo$widths), spp$silinfo$widths)
+            res <<- data.frame(spp$silinfo$widths)
             #res <- res[order(cluster),]
             avg <- data.frame(spp$silinfo$clus.avg.widths)
             names(res) <- sub("^sil_width$", "IndividualSilhouette", names(res))
             names(res) <<- sub("^cluster$", "Cluster", names(res))
             for(row in 1:nrow(res)) {
-                res[row, 5] <<- avg[res[row, 2],1]
-                # 5 is the column of Avg, 2 is the column of cluster
+                res[row, 4] <<- avg[res[row, 1],1]
+                # 4 is the column of Avg, 1 is the column of cluster
             }
             res
         }
-    })
+    }, include.rownames=TRUE)
 
     output$resultDownload <- downloadHandler(
         filename = "finalResult.DMP",
@@ -329,7 +329,7 @@ mue_server <- function (input, output) {
             }
         })
 
-    output$resultDownload <- downloadHandler(
+    output$summaryTable <- downloadHandler(
         filename = "summaryData.csv",
         content = function(file) {
             write.csv(res, file)
