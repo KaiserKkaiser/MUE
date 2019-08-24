@@ -16,6 +16,13 @@ mue_server <- function (input, output) {
         }
     )
 
+    output$paper <- downloadHandler(
+        filename = "Cope_Punt_2009.pdf",
+        content = function(file) {
+            file.copy("1.pdf", file)
+        }
+    )
+
      M_vals_all<- eventReactive(input$file1,{
     inFile <<- input$file1
     if(is.null(inFile)) {
