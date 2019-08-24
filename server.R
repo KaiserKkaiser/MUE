@@ -292,13 +292,19 @@ mue_server <- function (input, output) {
 ######### Render Final Summary Table #############
     output$areaCluster <- renderTable({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
-            ClusterNumber <- pp$clustering
-            Locations <- c(1:length(pp$clustering))
-            pp$clustering <- data.frame(Locations,ClusterNumber)
+            #ClusterNumber <- pp$clustering
+            #Locations <- c(1:length(pp$clustering))
+            res <<- data.frame(location=rownames(pp$silinfo$widths), pp$silinfo$widths)
+            #res <- res[order(cluster),]
+            names(res) <- sub("^sil_width$", "IndividualSilhouette", names(res))
+            avg <- data.frame(pp$silinfo$clus.avg.widths)
+            res
         } else if (input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
-            ClusterNumber <- spp$clustering
-            Locations <- c(1:length(spp$clustering))
-            spp$clustering <- data.frame(Locations,ClusterNumber)
+            res <<- data.frame(location=rownames(spp$silinfo$widths), spp$silinfo$widths)
+            #res <- res[order(cluster),]
+            avg <- data.frame(spp$silinfo$clus.avg.widths)
+            names(res) <- sub("^sil_width$", "IndividualSilhouette", names(res))
+            res
         }
     })
 
