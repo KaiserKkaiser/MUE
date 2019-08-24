@@ -248,14 +248,14 @@ mue_server <- function (input, output) {
             dev.off()
         })
 
-####################### Let the User Run with Their Number of Clusters #########################
+####################### Let the User Run with Their Number of Clusters ########################
 
     output$huplot <- renderPlot({
         if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfCluster <- as.numeric(input$noC)
-            pp <- pam(spp.Hg$D.matrix,numberOfCluster,diss=TRUE)
+            pp <<- pam(spp.Hg$D.matrix,numberOfCluster,diss=TRUE)
             hp <<- fviz_silhouette(pp, label=TRUE)
-            avghp <- dcast(hp$data,cluster~1,mean,value.var ="sil_width")
+            avghp <<- dcast(hp$data,cluster~1,mean,value.var ="sil_width")
             for(i in 0:(numberOfCluster-1)) {
                 hp <- hp + geom_hline(yintercept = avghp[[2]][i]) 
             }
@@ -264,9 +264,9 @@ mue_server <- function (input, output) {
             print(hp)
         } else if (input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
             numberOfCluster <- as.numeric(input$noC)
-            spp <- pam(spp.Sil$D.matrix,numberOfCluster,diss=TRUE)
+            spp <<- pam(spp.Sil$D.matrix,numberOfCluster,diss=TRUE)
             sp <<- fviz_silhouette(spp, label=TRUE)
-            avgsp <- dcast(sp$data,cluster~1,mean,value.var ="sil_width")
+            avgsp <<- dcast(sp$data,cluster~1,mean,value.var ="sil_width")
             for(i in 0:(numberOfCluster-1)) {
                 sp <- sp + geom_hline(yintercept = avgsp[[2]][i])
             }
@@ -287,6 +287,16 @@ mue_server <- function (input, output) {
             }
             dev.off()
         })
+
+
+######### Render Final Table #############
+    output$areaCluster <- renderTable({
+        if(input$button == 1 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
+
+        } else if (input$button == 0 && !anyNA(M_vals_all()) && length(M_vals_all()) > 0 && input$rd) {
+        
+        }
+    })
 
     output$resultDownload <- downloadHandler(
         filename = "finalResult.DMP",
