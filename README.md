@@ -14,3 +14,7 @@ Step I. Please make sure you change the "Dir" variable in MUE_run_code.r into th
 <p>
 Step II. Check the "example_B_CVs.csv" for sample data format. Or run the server file with shiny framework installed; Checkout download sample data button to download sample data.
 </p>
+# Sample usage
+<p>
+  <img src="https://github.com/KaiserKkaiser/MUE_GUI/blob/master/imgs/sp1.png" width="350" title="p1">
+</p>
