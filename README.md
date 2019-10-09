@@ -16,5 +16,5 @@ Step II. Check the "example_B_CVs.csv" for sample data format. Or run the server
 </p>
 # Sample usage
 <p>
-  <img src="https://github.com/KaiserKkaiser/MUE_GUI/blob/master/imgs/sp1.png" width="350" title="p1">
+  <img src="https://github.com/KaiserKkaiser/MUE_GUI/blob/master/imgs/sp1.png" width="700" title="p1">
 </p>
